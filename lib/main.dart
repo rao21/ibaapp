@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ibaapp/Widgets/list_tile.dart';
-import 'package:ibaapp/Widgets/list_view.dart';
-
-import 'Widgets/buttons.dart';
-import 'Widgets/cards.dart';
+import 'package:ibaapp/mid/mid.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +16,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyanAccent),
         useMaterial3: true,
       ),
-      home: const FLutterList(),
+      home: const StockList(),
     );
   }
 }
