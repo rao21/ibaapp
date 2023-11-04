@@ -1,28 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:ibaapp/mid/data_class.dart';
+import 'package:provider/provider.dart';
 
 import 'product_model.dart';
-
-Future<List<Products>> fetchStocks() async {
-  try {
-    final response =
-        await http.get(Uri.parse('https://dummyjson.com/products'));
-    if (response.statusCode == 200) {
-      Map<String, dynamic> parsedListJson = jsonDecode(response.body);
-      List<Products> itemsList = List<Products>.from(parsedListJson["products"]
-          .map<Products>((dynamic i) => Products.fromJson(i)));
-      return itemsList;
-    } else {
-      throw Exception('Failed to load album');
-    }
-  } catch (exp) {
-    throw Exception(exp.toString());
-  }
-}
-
-//Json Model Class
 
 class StockList extends StatefulWidget {
   const StockList({super.key});
@@ -33,7 +13,14 @@ class StockList extends StatefulWidget {
 
 class _StockListState extends State<StockList> {
   @override
+  void initState() {
+    Provider.of<ProviderClass>(context, listen: false).getDataFromAPI();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final postModel = Provider.of<ProviderClass>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Products"),
@@ -41,31 +28,29 @@ class _StockListState extends State<StockList> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: FutureBuilder<List<Products>>(
-          future: fetchStocks(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                  itemCount: snapshot.data?.length,
-                  itemBuilder: (contxt, i) {
-                    var item = snapshot.data![i];
-
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: ProductCard(
-                        obj: item,
-                      ),
-                    );
-                  });
-            } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
-            }
-
-            return Center(child: const CircularProgressIndicator());
-          },
-        ),
+        child: postModel.loading
+            ? _loadingWidget()
+            : _buildPostList(postModel.post!),
       ),
     );
+  }
+
+  CircularProgressIndicator _loadingWidget() =>
+      const CircularProgressIndicator();
+
+  ListView _buildPostList(List<Products> snapshot) {
+    return ListView.builder(
+        itemCount: snapshot.length,
+        itemBuilder: (contxt, i) {
+          var item = snapshot[i];
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: ProductCard(
+              obj: item,
+            ),
+          );
+        });
   }
 }
 
