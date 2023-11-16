@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "640558348662",
+    "project_id": "ibacoursemt",
+    "storage_bucket": "ibacoursemt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640558348662:android:4e559c185d45a033dae257",
+        "android_client_info": {
+          "package_name": "com.example.ibaapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXFxHWNBMtM6B8bN4q2F9ptW_9cSPiyNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
